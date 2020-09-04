@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <limits.h>
 
 #define MAXLINE 1000
 
@@ -43,22 +44,24 @@ int get_line(char s[], int lim)
     return l;
 }
 
-/* This implementation is a bit more complicated*/
+/* Using the method of lookup table: redusing the overall time complexity to O(length1 + length2) for this function. */
 void squeeze(char s1[], char s2[])
 {
-    int i, j, k;
-
-    i = 0;
-    while (s2[i] != '\0') {
-        j = 0;
-        while (s1[j] != '\0') {
-            if (s1[j] == s2[i]) {
-                k = j;
-                while ((s1[k] = s1[++k]) != '\0')
-                    ;
-            } else
-                ++j;
-        }
-        ++i;
+    /* Acutally we can use a data type with less storage in bytes */
+    int table[UCHAR_MAX + 1] = {0};
+    int pos = 0, cur;
+    while(s2[pos] != '\0') 
+    {
+        table[(unsigned char)s2[pos]] = 1;
+        ++pos;
     }
+    
+    pos = cur = 0;
+    while(s1[pos] != '\0')
+    {
+        if(!table[(unsigned char)s1[pos]])
+            s1[cur++] = s1[pos];
+        ++pos;
+    }
+    s1[cur] = '\0';
 }

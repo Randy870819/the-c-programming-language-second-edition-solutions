@@ -16,10 +16,12 @@ int main(void)
 
 unsigned rightroc(unsigned x, int n)
 {   
-    while (n-- > 0)
+/*    while (n-- > 0)
         if(x & 1)
             x = (x >> 1) | ~(~0U >> 1);
         else
             x = x >> 1;
+ */
+    x = ((unsigned)x)<<(sizeof(x)*8-n) | ((unsigned)x)>>n; 
     return x;
 }

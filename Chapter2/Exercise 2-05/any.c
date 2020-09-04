@@ -5,7 +5,7 @@
  */
 
 #include <stdio.h>
-
+#include <limits.h>
 #define MAXLINE 1000
 
 int get_line(char line[], int maxline);
@@ -44,18 +44,21 @@ int get_line(char s[], int lim)
 
 int any(char s1[], char s2[])
 {
-    int i, j;
-
-    i = 0;
-    while (s2[i] != '\0') {
-        j = 0;
-        while (s1[j] != '\0') {
-            if (s1[j] == s2[i])
-                return j;
-            ++j;
-        }
-        ++i;
+    /* Acutally we can use a data type with less storage in bytes */
+    int table[UCHAR_MAX + 1] = {0};
+    int pos = 0;
+    while(s2[pos] != '\0') 
+    {
+        table[(unsigned char)s2[pos]] = 1;
+        ++pos;
     }
-
+    
+    pos = 0;
+    while(s1[pos] != '\0')
+    {
+        if(table[(unsigned char)s1[pos]])
+            return pos; 
+        ++pos;
+    }
     return -1;
 }

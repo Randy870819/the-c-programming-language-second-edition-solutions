@@ -13,13 +13,8 @@ int main(void)
     char line[MAXLINE];
     int c, i;
 
-    i = 0;
-    while (i < MAXLINE - 1) {
-    if ((c=getchar()) == EOF)
-        break;
-    line[i++] = c;
-    if (c == '\n')
-        break;
+    for(i = 0; (i < MAXLINE - 1) & ((c=getchar()) != '\n') & (c != EOF); ++i) { 
+        line[i] = c;
     }
     line[i] = '\0';
 

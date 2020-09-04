@@ -9,7 +9,7 @@
 #define MAXLINE 1000
 
 int get_line(char line[], int maxline);
-unsigned long htoi(char s[]);
+int htoi(char s[]);
 
 int main(void)
 {
@@ -17,44 +17,46 @@ int main(void)
     char line[MAXLINE];
 
     while ((len = get_line(line, MAXLINE)) > 0)
-        printf("%lu\n", htoi(line));
-
+    {
+        printf("%s: %d\n",line, htoi(line));
+    }
     return 0;
 }
 
 int get_line(char s[], int lim)
 {
-    int c, i, l;
+    int c, i;
 
-    for (i = 0, l = 0; (c = getchar()) != EOF && c != '\n'; ++i)
-        if (i < lim - 1)
-            s[l++] = c;
-    // if (c == '\n' && l < lim - 1)
-    //      s[l++] = c;
-    s[l] = '\0';
+    for (i = 0; (i < lim - 1) && (c = getchar()) != EOF && c != '\n'; ++i)
+        s[i] = c;
+    
+    s[i] = '\0';
 
-    return l;
+    return i;
 }
 
-unsigned long htoi(char s[])
+int htoi(char s[])
 {
-    unsigned long n;
-    int i, c;
+    int n = 0, i = 0;
+    char c;
 
-    n = 0;
-    for (i = 0; s[i] != '\0'; ++i) {
+    if ((s[0] == '0') && (s[1] == 'x' || s[1] == 'X'))
+        i = 2;
+
+    for (i;  s[i] != '\0'; ++i) {
         c = s[i];
-        if (i == 0 && c == '0' && (s[1] == 'x' || s[1] == 'X')) {
-            i = 1;
-            continue;
-    }
-    n *= 16;
-    if (c >= '0' && c <= '9')
-        n += c - '0';
-    else if (c >= 'a' && c <= 'f')
-        n += c - 'a';
-    else if (c >= 'A' && c <= 'F')
-        n += c - 'A';
+        n *= 16;
+        if (c >= '0' && c <= '9')
+            n += c - '0';
+        else if (c >= 'a' && c <= 'f')
+            n += (c - 'a' + 10);
+        else if (c >= 'A' && c <= 'F')
+            n += (c - 'A' + 10);
+        else {
+            printf("Some undefined character were detected in the given string!\n");
+            n = -1;
+            break;        
+        }
     }
 
     return n;
