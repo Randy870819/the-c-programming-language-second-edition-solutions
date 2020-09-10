@@ -38,7 +38,7 @@ void itob(int n, char s[], int b)
     i = 0;
     do {
         remainder = n % b;
-        s[i++] = ((sign < 0) ? -remainder : remainder) + '0';
+        s[i++] = bases[((sign < 0) ? -remainder : remainder)];
     } while (n /= b);
     if (sign < 0)
         s[i++] = '-';
