@@ -27,19 +27,19 @@ int main(void)
 
 void reverse(char s[])
 {
-    reverse_r(s, 0, strlen(s) - 1);
+    if(strlen(s) > 1)
+        reverse_r(s, 0, strlen(s) - 1);
 }
 
 void reverse_r(char s[], int i, int j)
 {
-    int tmp;
-
-    tmp = s[i];
-    s[i] = s[j];
-    s[j] = tmp;
-
-    if (i < j)
-        reverse_r(s, ++i, --j);
+    // Ultimate in-place version of string reverse, while using exclusive OR operation, we cannot swap the variable at the same memory location or the result would be zero!!!
+    s[i] = s[i] ^ s[j]; 
+    s[j] = s[i] ^ s[j]; 
+    s[i] = s[i] ^ s[j]; 
+    
+    if ((++i) < (--j))
+        reverse_r(s, i, j);
 }
 
 int getchars(char s[], int max)

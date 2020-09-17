@@ -23,7 +23,9 @@ int main(void)
     printf("%d is converted to %s.\n", 826, s);
     itoa(-2093, s);
     printf("%d is converted to %s.\n", -2093, s);
-
+    itoa(0, s);
+    printf("%d is converted to %s.\n", 0, s);
+    
     return 0;
 }
 
@@ -38,12 +40,11 @@ void itoa_r(int n, char s[])
     int remainder, l;
 
     if (n / 10)
-        itoa(n / 10, s);
-
-    l = strlen(s);
-    if (n / 10 == 0 && n < 0)
-        s[l++] = '-';
+        itoa_r(n / 10, s);
+    else if (n < 0)
+        strcat(s, "-");
+        
     remainder = n % 10;
-    s[l++] = ((n < 0) ? -remainder : remainder) + '0';
-    s[l++] = '\0';
+    char buf[2] = {((n < 0) ? -remainder : remainder) + '0', '\0'};
+    strcat(s, buf); 
 }

@@ -6,11 +6,14 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define MAXLINE 1000
 
 int getchars(char s[], int max);
 int strindex(char source[], char searchfor[]);
+int KMPsearch(char source[], char pattern[]);
+void Compute_prefix(char pattern[], int arr[]);
 
 int main(void)
 {
@@ -44,19 +47,52 @@ int getchars(char s[], int max)
 
 int strindex(char s[], char t[])
 {
-    int sl, tl;
-    int i, j, k;
-    int c;
+    
+    return KMPsearch(s, t);
+}
 
-    sl = strlen(s);
-    tl = strlen(t);
-    i = sl - tl;
-    while (i >= 0) {
-        for (j = i, k = 0; t[k] != '\0' && s[j] == t[k]; ++j, ++k)
-            ;
-        if (k > 0 && t[k] == '\0')
-            return i;
-        --i;
+void Compute_prefix(char pattern[], int *arr)
+{
+    int m = strlen(pattern);
+    
+    arr[0] = -1;
+
+    int k = -1;
+
+    for(int q=1; q<m; ++q)
+    {
+        while(k>=0 && pattern[k+1]!=pattern[q])
+            k = arr[k];
+
+        if(pattern[k+1]==pattern[q])
+            ++k;
+
+        arr[q] = k;
+
     }
-    return -1;
+}
+    
+int KMPsearch(char source[], char pattern[])
+{
+    int n = strlen(source);
+    int m = strlen(pattern);
+
+    int *arr = malloc(m * sizeof(int));
+    Compute_prefix(pattern, arr);
+    
+    int q = -1, pos = -1;
+    
+    for(int i=0; i<n; ++i)
+    {
+        while(q>=0 && pattern[q+1]!=source[i])
+            q = arr[q];
+        if(pattern[q+1]==source[i])
+            ++q;
+
+        if(q==m-1)
+            pos = i - (m - 1);
+    }
+
+    free(arr);
+    return pos;
 }

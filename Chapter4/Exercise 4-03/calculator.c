@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h> /* for atof() */
 #include <math.h>
+#include <ctype.h>
 
 #define MAXLINE 1000
 #define MAXOP 100 /* max size of operand or operator */
@@ -88,7 +89,6 @@ double pop(void)
     }
 }
 
-#include <ctype.h>
 
 int getch(void);
 void ungetch(int);
@@ -127,8 +127,7 @@ int getop(char s[])
 
 char buf[BUFSIZE]; /* buffer for ungetch */
 int bufp = 0; /* next free position in buf */
-
-int getch(void) /* get a (possibly pushed-back) character */
+int getch(void)
 {
     return (bufp > 0) ? buf[--bufp] : getchar();
 }

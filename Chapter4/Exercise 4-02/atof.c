@@ -65,7 +65,7 @@ double atof(char s[])
         for (exponent = 0; isdigit(s[i]); i++) {
             exponent = 10 * exponent + (s[i] - '0');
         }
-        while (exponent-- > 0)
+        while (exponent--)
             epower *= base;
     }
     return sign * val / power * epower;
